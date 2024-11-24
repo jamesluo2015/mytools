@@ -13,28 +13,34 @@ def create_chart(input_data, chart_type):
     elif chart_type == "scatter":
         st.scatter_chart(df_data)
 
-st.title("💡 CSV数据分析智能工具")
+st.title("小工同学")
 
-with st.sidebar:
-    openai_api_key = st.text_input("请输入OpenAI API密钥：", type="password")
-    st.markdown("[获取OpenAI API key](https://platform.openai.com/account/api-keys)")
-    st.write("sk-5e17dee3228646c18589922b39997f49")
+# with st.sidebar:
+openai_api_key = st.text_input("请输入阿里百炼API密钥：", type="password")
+# st.markdown("[获取阿里 百炼 API key](https://platform.openai.com/account/api-keys)")
+st.write("sk-5e17dee3228646c18589922b39997f38")
 
-data = st.file_uploader("上传你的数据文件（CSV格式）：", type="csv")
+data = st.file_uploader("上传excle格式文件：", type=["xls","xlsx"])
 if data:
-    st.session_state["df"] = pd.read_csv(data)
-    with st.expander("原始数据"):
+    st.session_state["df"] = pd.read_excel(data)
+    with st.expander("底表数据"):
         st.dataframe(st.session_state["df"])
 
-query = st.text_area("请输入你关于以上表格的问题，或数据提取请求，或可视化要求（支持散点图、折线图、条形图）：")
-button = st.button("生成回答")
+
+query = st.text_area("请输入以上表格内容的问题，或数据提取请求，或可视化要求（支持散点图、折线图、条形图）：")
+button = st.button("获取回答")
 
 if button and not openai_api_key:
-    st.info("请输入你的OpenAI API密钥")
+    st.warning("请输入你的阿里百炼 API密钥")
+    st.stop()
+if button and not query:
+    st.warning("请输入你的问题")
+    st.stop()
 if button and "df" not in st.session_state:
-    st.info("请先上传数据文件")
-if button and openai_api_key and "df" in st.session_state:
-    with st.spinner("AI正在思考中，请稍等..."):
+    st.warning("请先上传数据文件")
+    st.stop()
+if button and openai_api_key and "df" in st.session_state  and query:
+    with st.spinner("小工正在努力中，请稍等..."):
         response_dict = dataframe_agent(openai_api_key, st.session_state["df"], query)
         if "answer" in response_dict:
             st.write(response_dict["answer"])

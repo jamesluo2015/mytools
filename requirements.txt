@@ -13,6 +13,7 @@ click==8.1.7
 dashscope==1.20.13
 dataclasses-json==0.6.4
 distro==1.9.0
+et_xmlfile==2.0.0
 exceptiongroup==1.2.0
 frozenlist==1.4.1
 gitdb==4.0.11
@@ -42,6 +43,7 @@ multidict==6.0.5
 mypy-extensions==1.0.0
 numpy==1.26.4
 openai==1.17.1
+openpyxl==3.1.5
 orjson==3.10.0
 packaging==23.2
 pandas==2.2.2
